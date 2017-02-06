@@ -1,0 +1,100 @@
+﻿<Window x:Class="TaskManagerApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:custns="clr-namespace:TaskManagerApplication"
+        Title="MainWindow" Height="450" Width="725" >
+    <Window.DataContext>
+        <custns:TaskManagerViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Tasks" 
+               FontSize="30"  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Green" />
+        <Label Grid.Column="1" Grid.Row="0" Content="All Categories" 
+               FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Label Grid.Column="2" Grid.Row="0" Content="All Tasks" 
+               FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Border Grid.Column="1" Grid.RowSpan="8" BorderBrush="Green" 
+        BorderThickness="3,0,0,0"  />
+
+        <Label Grid.Column="0" Grid.Row="1" Content="Today's Tasks" 
+               FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <Button Grid.Column="1" Grid.Row="1" Content="Add Category" HorizontalAlignment="Center" Width="100"/>
+
+        <Button Grid.Column="2" Grid.Row="1" Content="Add Task" HorizontalAlignment="Center" Width="150" />
+
+        <ListBox Name="todaysTasksList" Padding="2" Margin="5,10,5,5" Grid.Row="2"  Grid.Column="0" Grid.RowSpan="5" ItemsSource="{Binding TodaysTasks}" HorizontalContentAlignment="Stretch">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
+                        <Label Grid.Column="1" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <ScrollViewer Margin="1,5,1,1" Grid.Row="2" Grid.RowSpan="5" Grid.Column="1">
+
+            <ListBox Name="categoriesList" Padding="1" Margin="5" Grid.Row="2"  Grid.Column="1" Grid.RowSpan="5" ItemsSource="{Binding Categories}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                            <Label Content="{Binding Name}" FontSize="18"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+
+        <ScrollViewer Margin="1,5,1,1" Grid.Row="2" Grid.RowSpan="5" Grid.Column="2">
+
+            <ListBox Name="allTasksList" Margin="5" Grid.Row="2"  Grid.Column="2" Grid.RowSpan="5" ItemsSource="{Binding Tasks}" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30*"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
+                                    BorderBrush="Black" BorderThickness="1,1,1,1" Padding="2" Margin="1"/>
+                            
+                            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
+                            <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="LeftToRight" FontSize="10"/>
+                            <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
+                            
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Description}" FlowDirection="LeftToRight" FontSize="14" Padding="2" Margin="2"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+    </Grid>
+</Window>
