@@ -42,21 +42,21 @@ namespace TaskManagerApplication
         public List<TaskManagerApplication.Task> Tasks
         {
             get { return tasks; }
-            set { tasks = value; NotifyPropertyChanged(); }
+            set { tasks = value; NotifyPropertyChanged("Tasks"); }
         }
 
         private List<Category> categories;
         public List<Category> Categories
         {
             get { return categories; }
-            set { categories = value; NotifyPropertyChanged(); }
+            set { categories = value; NotifyPropertyChanged("Categories"); }
         }
 
         private List<TaskManagerApplication.Task> todaysTasks;
         public List<TaskManagerApplication.Task> TodaysTasks
         {
             get { return todaysTasks; }
-            set { todaysTasks = value; NotifyPropertyChanged(); }
+            set { todaysTasks = value; NotifyPropertyChanged("TodaysTasks"); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -67,5 +67,20 @@ namespace TaskManagerApplication
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public void AddCategory()
+        {
+
+
+            //var childWindowViewModel = new MyChildWindowViewModel(); //you can set parameters here if necessary
+            //var dialogResult = DialogService.ShowModal(childWindowViewModel);
+            //if (dialogResult == true)
+            //{
+            //    //you can read user input from childWindowViewModel
+            //}
+
+        }
+
+
     }
 }

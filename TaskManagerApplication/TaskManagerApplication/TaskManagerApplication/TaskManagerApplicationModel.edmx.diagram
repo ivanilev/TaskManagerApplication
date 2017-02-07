@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a4a2e683f7a74808b46be27887829e4a" Name="Diagram1">
+      <Diagram DiagramId="f41de7324a1346958a4f0e9dea08a0d1" Name="Diagram1">
         <EntityTypeShape EntityType="TaskManagerDBModel.Category" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="TaskManagerDBModel.Priority" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="TaskManagerDBModel.Task" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />

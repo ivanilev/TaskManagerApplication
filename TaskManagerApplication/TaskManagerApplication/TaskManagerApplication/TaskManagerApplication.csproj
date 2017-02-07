@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D9E9234B-D767-4946-BCCA-7FF18AA413FD}</ProjectGuid>
+    <ProjectGuid>{31831261-2982-4062-90F2-176A87476396}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TaskManagerApplication</RootNamespace>
@@ -32,46 +32,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -104,31 +64,47 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCategoryViewModel.cs" />
+    <Compile Include="AddCategoryWindow.xaml.cs">
+      <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddTaskWindow.xaml.cs">
+      <DependentUpon>AddTaskWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Category.cs">
-      <DependentUpon>TaskManagerModel.tt</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Priority.cs">
-      <DependentUpon>TaskManagerModel.tt</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Task.cs">
-      <DependentUpon>TaskManagerModel.tt</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TaskManagerModel.Context.cs">
+    <Compile Include="TaskManagerApplicationModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TaskManagerModel.Context.tt</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="TaskManagerModel.cs">
+    <Compile Include="TaskManagerApplicationModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TaskManagerModel.tt</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="TaskManagerModel.Designer.cs">
+    <Compile Include="TaskManagerApplicationModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>TaskManagerModel.edmx</DependentUpon>
+      <DependentUpon>TaskManagerApplicationModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="TaskManagerViewModel.cs" />
+    <Page Include="AddCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -166,27 +142,27 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <EntityDeploy Include="TaskManagerModel.edmx">
+    <EntityDeploy Include="TaskManagerApplicationModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TaskManagerModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>TaskManagerApplicationModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="TaskManagerModel.edmx.diagram">
-      <DependentUpon>TaskManagerModel.edmx</DependentUpon>
+    <None Include="TaskManagerApplicationModel.edmx.diagram">
+      <DependentUpon>TaskManagerApplicationModel.edmx</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TaskManagerModel.Context.tt">
+    <Content Include="TaskManagerApplicationModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>TaskManagerModel.edmx</DependentUpon>
-      <LastGenOutput>TaskManagerModel.Context.cs</LastGenOutput>
+      <DependentUpon>TaskManagerApplicationModel.edmx</DependentUpon>
+      <LastGenOutput>TaskManagerApplicationModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="TaskManagerModel.tt">
+    <Content Include="TaskManagerApplicationModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>TaskManagerModel.edmx</DependentUpon>
-      <LastGenOutput>TaskManagerModel.cs</LastGenOutput>
+      <DependentUpon>TaskManagerApplicationModel.edmx</DependentUpon>
+      <LastGenOutput>TaskManagerApplicationModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

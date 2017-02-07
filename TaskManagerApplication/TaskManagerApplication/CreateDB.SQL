@@ -119,44 +119,30 @@ go
 
 /*Create Categories table*/
 	IF object_id('Categories', 'U') IS NULL
-		CREATE TABLE [TaskManagerDB].[dbo].[Categories](
-			[ID] [int] NOT NULL,
-			[Name] [nchar](10) NOT NULL,
-		 CONSTRAINT [PK_Categories] PRIMARY KEY CLUSTERED 
+		CREATE TABLE [TaskManagerDB].[dbo].[Categories]
 		(
-			[ID] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-		) ON [PRIMARY]
-
+			[ID] [int] Identity(1,1) PRIMARY KEY,
+			[Name] [nchar](10) NOT NULL,
+		) 
 	GO
 /* Create Properties table*/
 	IF object_id('Priorities', 'U') IS NULL
-	CREATE TABLE [TaskManagerDB].[dbo].[Priorities](
-		[ID] [int] NOT NULL,
-		[Setting] [nchar](10) NOT NULL,
-	 CONSTRAINT [PK_Priorities] PRIMARY KEY CLUSTERED 
-	(
-		[ID] ASC
-	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-	) ON [PRIMARY]
-
+	CREATE TABLE [TaskManagerDB].[dbo].[Priorities]
+		(
+			[ID] [int] Identity(1,1) PRIMARY KEY,
+			[Setting] [nchar](10) NOT NULL,
+		)
 	GO
 
 /*Create Tasks table*/
 	IF object_id('Tasks', 'U') IS NULL
 		CREATE TABLE [TaskManagerDB].[dbo].[Tasks](
-			[ID] [int] NOT NULL,
+			[ID] [int] Identity(1,1) PRIMARY KEY,
 			[CategoryID] [int] NOT NULL,
 			[PriorityID] [int] NULL,
 			[Name] [nchar](10) NOT NULL,
 			[Description] [nvarchar](50) NULL,
-			[Deadline] [datetime] NULL,
-			CONSTRAINT [PK_Tasks] PRIMARY KEY CLUSTERED 
-		(
-			[ID] ASC
-		)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-		) ON [PRIMARY]
-
+			[Deadline] [datetime] NULL
 	GO
 
 	ALTER TABLE [dbo].[Tasks]  WITH CHECK ADD  CONSTRAINT [FK_Tasks_Categories] FOREIGN KEY([CategoryID])
@@ -170,3 +156,11 @@ go
 	REFERENCES [dbo].[Priorities] ([ID])
 	GO
 /*End Create Tasks table*/
+
+
+insert into TaskManagerDB.dbo.Priorities
+values (N'High')
+insert into TaskManagerDB.dbo.Priorities
+values (N'Medium')
+insert into TaskManagerDB.dbo.Priorities
+values (N'Low'

@@ -35,9 +35,9 @@
         <Label Grid.Column="0" Grid.Row="1" Content="Today's Tasks" 
                FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Button Grid.Column="1" Grid.Row="1" Content="Add Category" HorizontalAlignment="Center" Width="100"/>
+        <Button Name="btnAddCategory" Grid.Column="1" Grid.Row="1" Content="Add Category" HorizontalAlignment="Center" Width="100" Click="btnAddCategory_Click"/>
 
-        <Button Grid.Column="2" Grid.Row="1" Content="Add Task" HorizontalAlignment="Center" Width="150" />
+        <Button Name="btnAddTask" Grid.Column="2" Grid.Row="1" Content="Add Task" HorizontalAlignment="Center" Width="150" Click="btnAddTask_Click" />
 
         <ListBox Name="todaysTasksList" Padding="2" Margin="5,10,5,5" Grid.Row="2"  Grid.Column="0" Grid.RowSpan="5" ItemsSource="{Binding TodaysTasks}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
@@ -60,7 +60,7 @@
             <ListBox Name="categoriesList" Padding="1" Margin="5" Grid.Row="2"  Grid.Column="1" Grid.RowSpan="5" ItemsSource="{Binding Categories}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                            <Label Content="{Binding Name}" FontSize="18"/>
+                        <Label Content="{Binding Name}" FontSize="18"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -82,14 +82,14 @@
                                 <RowDefinition Height="30*"/>
                                 <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
-                            
+
                             <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
                                     BorderBrush="Black" BorderThickness="1,1,1,1" Padding="2" Margin="1"/>
-                            
+
                             <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
                             <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="LeftToRight" FontSize="10"/>
                             <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
-                            
+
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Description}" FlowDirection="LeftToRight" FontSize="14" Padding="2" Margin="2"/>
                         </Grid>
                     </DataTemplate>
