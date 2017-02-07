@@ -68,19 +68,5 @@ namespace TaskManagerApplication
             }
         }
 
-        public void AddCategory()
-        {
-
-
-            //var childWindowViewModel = new MyChildWindowViewModel(); //you can set parameters here if necessary
-            //var dialogResult = DialogService.ShowModal(childWindowViewModel);
-            //if (dialogResult == true)
-            //{
-            //    //you can read user input from childWindowViewModel
-            //}
-
-        }
-
-
     }
 }
