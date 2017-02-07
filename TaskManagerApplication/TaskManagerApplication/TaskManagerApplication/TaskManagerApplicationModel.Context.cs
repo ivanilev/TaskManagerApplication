@@ -16,7 +16,7 @@ namespace TaskManagerApplication
     public partial class TaskManagerDBContext : DbContext
     {
         public TaskManagerDBContext()
-            : base("name=TaskManagerDBContext")
+            : base("TaskManagerDBContext")
         {
         }
     

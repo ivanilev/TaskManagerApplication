@@ -36,5 +36,13 @@ namespace TaskManagerApplication
             var categoryWindow = new AddCategoryWindow();
             categoryWindow.Show();
         }
+
+        private void Window_GotFocus(object sender, RoutedEventArgs e)
+        {
+//            todaysTasksList.UpdateLayout();
+            //categoriesList.InvalidateArrange();
+            //categoriesList.UpdateLayout();
+  //          allTasksList.UpdateLayout();
+        }
     }
 }

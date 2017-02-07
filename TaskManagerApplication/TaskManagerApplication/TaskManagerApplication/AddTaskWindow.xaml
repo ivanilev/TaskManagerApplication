@@ -1,13 +1,19 @@
 ﻿<Window x:Class="TaskManagerApplication.AddTaskWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddTaskWindow" Height="300" Width="400">
+        Title="AddTaskWindow" Height="350" Width="400"
+        xmlns:custns="clr-namespace:TaskManagerApplication"
+        >
+    <Window.DataContext>
+        <custns:AddTaskViewModel />
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -25,7 +31,7 @@
         <TextBox Grid.Row="0" Grid.Column="1"
                HorizontalContentAlignment="Left"
                VerticalContentAlignment="Center"
-               Height="30" FontSize="16" Text=""
+               Height="30" FontSize="16" Text="{Binding Path=TaskName}"
             />
 
 
@@ -35,13 +41,17 @@
                VerticalContentAlignment="Center"
                FontSize="16"
                />
-        <DockPanel Grid.Row="1" Grid.Column="1"
+        <StackPanel  Orientation="Horizontal" 
+                     Grid.Row="1" Grid.Column="1"
                     HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Width="Auto" LastChildFill="True">
-            <RadioButton FontSize="16" Content="Low" Margin="5" Width="Auto" />
-            <RadioButton FontSize="16" Content="Medium" Margin="5" Width="Auto" />
-            <RadioButton FontSize="16" Content="High" Margin="5" Width="Auto" />
-        </DockPanel>
+                   Width="Auto">
+            <RadioButton FontSize="16" Content="Low" Margin="5" Width="Auto" 
+                        IsChecked="{Binding Path=IsLowPriorityChecked, Mode=TwoWay}"/>
+            <RadioButton FontSize="16" Content="Medium" Margin="5" Width="Auto" 
+                        IsChecked="{Binding Path=IsMediumPriorityChecked, Mode=TwoWay}"/>
+            <RadioButton FontSize="16" Content="High" Margin="5" Width="Auto" 
+                        IsChecked="{Binding Path=IsHighPriorityChecked, Mode=TwoWay}"/>
+        </StackPanel>
 
 
 
@@ -54,24 +64,55 @@
         <DatePicker Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
                      VerticalAlignment="Center"
                     BorderBrush="Black" BorderThickness="1" Height="30"
-                    Name="dpDeadline"
+                    Name="dpDeadline" SelectedDate="{Binding Path=Deadline}"
                  />
 
         <Label Grid.Row="3" Grid.Column="0"
+               Content="Category:"
+               HorizontalContentAlignment="Left"
+               VerticalContentAlignment="Center"
+               FontSize="16"
+               />
+        <StackPanel Grid.Row="3" Grid.Column="1"  
+                    HorizontalAlignment="Stretch" VerticalAlignment="Center">
+
+            <ComboBox ItemsSource="{Binding Path=Categories}" 
+                      SelectedItem="{Binding SelectedCategory}"
+                      Name="cmbCategory">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="{Binding Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+
+        <Label Grid.Row="4" Grid.Column="0"
                Content="Task Description:"
                HorizontalContentAlignment="Left"
                VerticalContentAlignment="Center"
                FontSize="16"
                />
-        <TextBlock/>
+        <DockPanel Grid.Row="4" Grid.Column="1" >
+            <TextBox FontSize="14" TextWrapping="Wrap"
+                   HorizontalAlignment="Stretch" 
+                   Height="40" Text="{Binding Path=TaskDescription}"
+                   BorderBrush="Black" BorderThickness="1" 
+                   />
+        </DockPanel>
+        
 
 
-        <Button Name="btnSave" Grid.Row="4" Grid.Column="0"
+        <Button Name="btnSave" Grid.Row="5" Grid.Column="0"
                 Content="Save" Width="80" Height="30" 
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"/>
-        <Button Name="btnClose" Grid.Row="4" Grid.Column="1" 
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
+                Command="{Binding SaveChangesCommand}"
+                />
+        <Button Name="btnClose" Grid.Row="5" Grid.Column="1" 
                 Content="Close" Width="80" Height="30" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="btnClose_Click" 
                 />
 
     </Grid>
