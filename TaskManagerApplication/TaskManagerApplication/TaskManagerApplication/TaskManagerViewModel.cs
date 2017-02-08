@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 
 namespace TaskManagerApplication
 {
@@ -15,7 +16,11 @@ namespace TaskManagerApplication
             FillAllTasks();
             FillCategories();
             FillTodaysTasks();
+
+            DispatcherTimerSetup();
         }
+
+        
 
         private void FillAllTasks()
         {
@@ -37,6 +42,46 @@ namespace TaskManagerApplication
 
             this.TodaysTasks = query;
         }
+
+        #region User Notification functionality
+
+        //Dispatcher Timer Setup
+        private void DispatcherTimerSetup()
+        {
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(10);
+            dispatcherTimer.Tick += new EventHandler(PerformCheck);
+            dispatcherTimer.Start();
+        }
+
+        private void PerformCheck(object sender, EventArgs e)
+        {
+            var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
+            
+            int days_Remaining = (q[0].Deadline.Value - DateTime.Now).Days; 
+            if (days_Remaining < 3)
+            {
+                DeadlineComingUp = "Red";
+            }
+            else
+            {
+                DeadlineComingUp = "Transparent";
+            }
+        }
+
+        private string deadlineComingUp;
+
+        public string DeadlineComingUp
+        {
+            get { return deadlineComingUp; }
+            set { deadlineComingUp = value; NotifyPropertyChanged("DeadlineComingUp"); }
+        }
+        #endregion
+
+
+
+
+
 
         private List<TaskManagerApplication.Task> tasks;
         public List<TaskManagerApplication.Task> Tasks

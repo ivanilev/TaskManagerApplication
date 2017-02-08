@@ -21,7 +21,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-
+        
         <Label Grid.Column="0" Grid.Row="0" Content="Tasks" 
                FontSize="30"  HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Green" />
         <Label Grid.Column="1" Grid.Row="0" Content="All Categories" 
@@ -39,7 +39,10 @@
 
         <Button Name="btnAddTask" Grid.Column="2" Grid.Row="1" Content="Add Task" HorizontalAlignment="Center" Width="150" Click="btnAddTask_Click" />
 
-        <ListBox Name="todaysTasksList" Padding="2" Margin="5,10,5,5" Grid.Row="2"  Grid.Column="0" Grid.RowSpan="5" ItemsSource="{Binding TodaysTasks}" HorizontalContentAlignment="Stretch">
+        <ListBox Name="todaysTasksList" Padding="2" Margin="5,10,5,5" Grid.Row="2"  Grid.Column="0" Grid.RowSpan="5" 
+                 ItemsSource="{Binding TodaysTasks}" HorizontalContentAlignment="Stretch" Background="{Binding Path=DeadlineComingUp}" 
+                 
+                 >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
