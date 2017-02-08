@@ -14,7 +14,6 @@ namespace TaskManagerApplication
         {
             SaveChangesCommand = new RelayCommand(AddTask);
 
-           // FillPriorities();
             FillCategories();
         }
 

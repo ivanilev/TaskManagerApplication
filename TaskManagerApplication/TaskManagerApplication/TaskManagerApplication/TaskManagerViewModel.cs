@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace TaskManagerApplication
@@ -18,6 +19,8 @@ namespace TaskManagerApplication
             FillTodaysTasks();
 
             DispatcherTimerSetup();
+
+            RefreshCommand = new RelayCommand(Refresh);
         }
 
         
@@ -78,10 +81,25 @@ namespace TaskManagerApplication
         }
         #endregion
 
+        #region Refresh Functionality
+
+        private void Refresh(object o)
+        {
+            Tasks.Clear();
+            FillAllTasks();
+
+            Categories.Clear();
+            FillCategories();
+
+            TodaysTasks.Clear();
+            FillTodaysTasks();
+        }
 
 
+        public ICommand RefreshCommand { get; set; }
 
 
+        #endregion
 
         private List<TaskManagerApplication.Task> tasks;
         public List<TaskManagerApplication.Task> Tasks
@@ -103,6 +121,8 @@ namespace TaskManagerApplication
             get { return todaysTasks; }
             set { todaysTasks = value; NotifyPropertyChanged("TodaysTasks"); }
         }
+
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
