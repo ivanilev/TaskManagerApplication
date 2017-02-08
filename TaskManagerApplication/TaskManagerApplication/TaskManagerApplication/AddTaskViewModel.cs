@@ -5,20 +5,53 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Linq;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace TaskManagerApplication
 {
     public class AddTaskViewModel : INotifyPropertyChanged
     {
+        private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
+
         public AddTaskViewModel()
         {
-            SaveChangesCommand = new RelayCommand(AddTask);
+            SaveChangesCommand = new RelayCommand(SaveTask);
 
             FillCategories();
         }
 
-        private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
+        private void FillCategories()
+        {
+            var q = (from c in _dbContext.Categories select c).ToList();
+            Categories = q;
+        }
+        private void SaveTask(object o)
+        {
 
+            try
+            {
+                Task t = new Task();
+
+                t.Name = TaskName;
+                t.Category = SelectedCategory;
+                t.Deadline = Deadline;
+                t.Description = TaskDescription;
+
+                if (isHighPriorityChecked) { t.PriorityID = 1; }
+                else if (IsMediumPriorityChecked) { t.PriorityID = 2; }
+                else { t.PriorityID = 3; }
+
+                _dbContext.Tasks.Add(t);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+        
+        #region Properties
+        
         private bool isHighPriorityChecked;
         public bool IsHighPriorityChecked
         {
@@ -47,11 +80,6 @@ namespace TaskManagerApplication
             set { categories = value; NotifyPropertyChanged("Categories"); }
         }
 
-        private void FillCategories()
-        {
-            var q = (from c in _dbContext.Categories select c).ToList();
-            Categories = q;
-        }
 
         private Category selectedCategory;
         public Category SelectedCategory
@@ -81,38 +109,10 @@ namespace TaskManagerApplication
             get { return deadline; }
             set { deadline = value; NotifyPropertyChanged("Deadline"); }
         }
+        
+        #endregion
 
         public ICommand SaveChangesCommand { get; set; }
-
-        private void AddTask(object o)
-        {
-           
-            try
-            {
-                Task t = new Task();
-
-                t.Name = TaskName;
-                
-                if (isHighPriorityChecked) { t.PriorityID = 1; }
-                else if (IsMediumPriorityChecked) { t.PriorityID = 2; }
-                else { t.PriorityID = 3; }
-
-                t.Category = SelectedCategory;
-
-                t.Deadline = Deadline;
-
-                t.Description = TaskDescription;
-
-
-
-                _dbContext.Tasks.Add(t);
-                _dbContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

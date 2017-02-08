@@ -24,17 +24,5 @@ namespace TaskManagerApplication
         {
             InitializeComponent();
         }
-
-        private void btnAddTask_Click(object sender, RoutedEventArgs e)
-        {
-            var taskWindow = new AddTaskWindow();
-            taskWindow.Show();
-        }
-
-        private void btnAddCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var categoryWindow = new AddCategoryWindow();
-            categoryWindow.Show();
-        }
     }
 }

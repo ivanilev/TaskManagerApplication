@@ -9,14 +9,12 @@ namespace TaskManagerApplication
 {
     public class AddCategoryViewModel : INotifyPropertyChanged
     {
-        public AddCategoryViewModel()
-        {
-            SaveChangesCommand = new RelayCommand(AddCategory);
-
-        }
-
         private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
 
+        public AddCategoryViewModel()
+        {
+            SaveChangesCommand = new RelayCommand(SaveCategory);
+        }
 
         private string categoryName;
         public string CategoryName
@@ -32,9 +30,7 @@ namespace TaskManagerApplication
             }
         }
 
-        public ICommand SaveChangesCommand { get; set; }
-
-        private void AddCategory(object p)
+        private void SaveCategory(object p)
         {
             try
             {
@@ -45,11 +41,10 @@ namespace TaskManagerApplication
             }
             catch (Exception e)
             {
-
+                MessageBox.Show(e.Message);
             }
         }
-
-
+        public ICommand SaveChangesCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

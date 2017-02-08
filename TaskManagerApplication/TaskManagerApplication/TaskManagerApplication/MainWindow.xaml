@@ -33,11 +33,11 @@
         <Label Grid.Column="0" Grid.Row="1" Content="Today's Tasks" 
                FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
-        <Button Name="btnAddCategory" Grid.Column="1" Grid.Row="1" Content="Add Category" HorizontalAlignment="Center" Width="100" Click="btnAddCategory_Click"/>
+        <Button Name="btnAddCategory" Grid.Column="1" Grid.Row="1" Content="Add Category" HorizontalAlignment="Center" Width="100" Command="{Binding AddCategoryCommand}"/>
 
         <Button Name="btnAddTask" Grid.Column="2" Grid.Row="1" 
                 Content="Add Task" HorizontalAlignment="Center"
-                Width="100" Click="btnAddTask_Click" />
+                Width="100" Command="{Binding AddTaskCommand}" />
         <Button Grid.Column="3" Grid.Row="1" Content="Refresh Lists" 
                 HorizontalAlignment="Center" Width="100" 
                 Command="{Binding RefreshCommand}"/>

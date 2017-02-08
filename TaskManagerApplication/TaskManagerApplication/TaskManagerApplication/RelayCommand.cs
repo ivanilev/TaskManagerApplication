@@ -23,7 +23,8 @@ namespace TaskManagerApplication
 
         public void Execute(object parameter)
         {
-            _action(parameter);
+            if(CanExecute(parameter))
+                _action(parameter);
         }
 
         #endregion

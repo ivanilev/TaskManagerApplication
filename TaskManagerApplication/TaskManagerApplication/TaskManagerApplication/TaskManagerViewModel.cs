@@ -21,9 +21,9 @@ namespace TaskManagerApplication
             DispatcherTimerSetup();
 
             RefreshCommand = new RelayCommand(Refresh);
+            AddCategoryCommand = new RelayCommand(AddCategory);
+            AddTaskCommand = new RelayCommand(AddTask);
         }
-
-        
 
         private void FillAllTasks()
         {
@@ -46,6 +46,51 @@ namespace TaskManagerApplication
             this.TodaysTasks = query;
         }
 
+        private List<TaskManagerApplication.Task> todaysTasks;
+        public List<TaskManagerApplication.Task> TodaysTasks
+        {
+            get { return todaysTasks; }
+            set { todaysTasks = value; NotifyPropertyChanged("TodaysTasks"); }
+        }
+
+        #region Categories
+
+        private List<Category> categories;
+        public List<Category> Categories
+        {
+            get { return categories; }
+            set { categories = value; NotifyPropertyChanged("Categories"); }
+        }
+
+        public ICommand AddCategoryCommand { get; set; }
+        
+        private void AddCategory(object o)
+        {
+            var categoryWindow = new AddCategoryWindow();
+            categoryWindow.Show();
+        }
+
+        #endregion
+
+        #region Tasks
+
+        private List<TaskManagerApplication.Task> tasks;
+        public List<TaskManagerApplication.Task> Tasks
+        {
+            get { return tasks; }
+            set { tasks = value; NotifyPropertyChanged("Tasks"); }
+        }
+
+        public ICommand AddTaskCommand { get; set; }
+
+        private void AddTask(object o)
+        {
+            var taskWindow = new AddTaskWindow();
+            taskWindow.Show();
+        }
+
+        #endregion
+
         #region User Notification functionality
 
         //Dispatcher Timer Setup
@@ -60,8 +105,8 @@ namespace TaskManagerApplication
         private void PerformCheck(object sender, EventArgs e)
         {
             var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
-            
-            int days_Remaining = (q[0].Deadline.Value - DateTime.Now).Days; 
+
+            int days_Remaining = (q[0].Deadline.Value - DateTime.Now).Days;
             if (days_Remaining < 3)
             {
                 DeadlineComingUp = "Red";
@@ -95,34 +140,9 @@ namespace TaskManagerApplication
             FillTodaysTasks();
         }
 
-
         public ICommand RefreshCommand { get; set; }
 
-
         #endregion
-
-        private List<TaskManagerApplication.Task> tasks;
-        public List<TaskManagerApplication.Task> Tasks
-        {
-            get { return tasks; }
-            set { tasks = value; NotifyPropertyChanged("Tasks"); }
-        }
-
-        private List<Category> categories;
-        public List<Category> Categories
-        {
-            get { return categories; }
-            set { categories = value; NotifyPropertyChanged("Categories"); }
-        }
-
-        private List<TaskManagerApplication.Task> todaysTasks;
-        public List<TaskManagerApplication.Task> TodaysTasks
-        {
-            get { return todaysTasks; }
-            set { todaysTasks = value; NotifyPropertyChanged("TodaysTasks"); }
-        }
-
-       
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
