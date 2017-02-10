@@ -158,11 +158,14 @@ namespace TaskManagerApplication
             {
                 ctx.Tasks.Remove(AllTasksSelectedItem);
                 ctx.SaveChanges();
-                Refresh(null);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Refresh(null);
             }
         }
         private void EditTask(object o)
