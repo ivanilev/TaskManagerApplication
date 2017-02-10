@@ -198,6 +198,7 @@ namespace TaskManagerApplication
 
             ((TaskViewModel)editWindow.DataContext).Deadline = AllTasksSelectedItem.Deadline;
             ((TaskViewModel)editWindow.DataContext).SelectedCategory = AllTasksSelectedItem.Category;
+            ((TaskViewModel)editWindow.DataContext).Categories = Categories.ToList();
             ((TaskViewModel)editWindow.DataContext).TaskDescription = AllTasksSelectedItem.Description;
 
             ((TaskViewModel)editWindow.DataContext).OldTaskValue = AllTasksSelectedItem;

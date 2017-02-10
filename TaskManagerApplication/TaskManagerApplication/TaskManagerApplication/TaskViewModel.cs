@@ -22,11 +22,6 @@ namespace TaskManagerApplication
             FillCategories();
         }
 
-        private void FillCategories()
-        {
-            var q = (from c in _dbContext.Categories select c).ToList();
-            Categories = q;
-        }
         private void SaveTask(object o)
         {
             string errors = Validate();
@@ -59,34 +54,6 @@ namespace TaskManagerApplication
                 MessageBox.Show(e.Message);
             }
         }
-        /// <summary>
-        /// Validates all data in the window
-        /// </summary>
-        /// <returns>Empty string if validation passes and a string of the error if it does not.</returns>
-        private string Validate()
-        {
-            if (string.IsNullOrEmpty(TaskName) || string.IsNullOrWhiteSpace(TaskName))
-            {
-                return "Please select a task name!";
-            }
-
-            if ((IsHighPriorityChecked || IsMediumPriorityChecked || IsLowPriorityChecked) == false)
-                return "Please select task priority!";
-            
-            if (SelectedCategory == null)
-                return "Please select task category!";
-            
-
-            if (Deadline==null || Deadline <= DateTime.Today)
-                return "Deadline can't be null or scheduled for a previous date!";
-
-            if (String.IsNullOrEmpty(TaskDescription) || String.IsNullOrWhiteSpace(TaskDescription))
-            {
-                return "Please fill the task description field!";
-            }
-
-            return string.Empty;
-        }
         private void EditTask(object o)
         {
             string errors = Validate();
@@ -117,7 +84,42 @@ namespace TaskManagerApplication
                 //Close
             }
         }
+        
+        /// <summary>
+        /// Validates all data in the window
+        /// </summary>
+        /// <returns>Empty string if validation passes and a string of the error if it does not.</returns>
+        private string Validate()
+        {
+            if (string.IsNullOrEmpty(TaskName) || string.IsNullOrWhiteSpace(TaskName))
+            {
+                return "Please select a task name!";
+            }
 
+            if ((IsHighPriorityChecked || IsMediumPriorityChecked || IsLowPriorityChecked) == false)
+                return "Please select task priority!";
+            
+            if (SelectedCategory == null)
+                return "Please select task category!";
+            
+
+            if (Deadline==null || Deadline <= DateTime.Today)
+                return "Deadline can't be null or scheduled for a previous date!";
+
+            if (String.IsNullOrEmpty(TaskDescription) || String.IsNullOrWhiteSpace(TaskDescription))
+            {
+                return "Please fill the task description field!";
+            }
+
+            return string.Empty;
+        }
+        
+        private void FillCategories()
+        {
+            var q = (from c in _dbContext.Categories select c).ToList();
+            Categories = q;
+        }
+       
         #region Properties
 
         private Task oldTaskValue;
