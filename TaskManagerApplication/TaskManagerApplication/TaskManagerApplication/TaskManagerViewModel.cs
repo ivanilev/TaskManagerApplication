@@ -37,6 +37,7 @@ namespace TaskManagerApplication
 
         }
 
+        
         private void FillAllTasks()
         {
             var query = (from t in ctx.Tasks select t).ToList();
@@ -235,10 +236,17 @@ namespace TaskManagerApplication
             dispatcherTimer.Start();
         }
 
+        /// <summary>
+        /// Needs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PerformCheck(object sender, EventArgs e)
         {
+            //Get the task with the nearest deadline
             var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
 
+            //If there are less than three hours up until the deadline - today's tasks' background turns red.
             int hours_remaining = (q[0].Deadline.Value - DateTime.Now).Hours;
             if (hours_remaining < 3)
             {
@@ -276,6 +284,7 @@ namespace TaskManagerApplication
         public ICommand RefreshCommand { get; set; }
 
         #endregion
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

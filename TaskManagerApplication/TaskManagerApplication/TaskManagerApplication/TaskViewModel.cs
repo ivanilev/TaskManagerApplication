@@ -18,11 +18,12 @@ namespace TaskManagerApplication
         {
             SaveChangesCommand = new RelayCommand(SaveTask);
             EditChangesCommand = new RelayCommand(EditTask);
-
+            CloseWindowCommand = new RelayCommand(CloseWindow);
+        
             FillCategories();
         }
 
-        private void SaveTask(object o)
+        private void SaveTask(object window)
         {
             string errors = Validate();
             if (!String.IsNullOrEmpty(errors)) { MessageBox.Show(errors); return; }
@@ -53,8 +54,12 @@ namespace TaskManagerApplication
             {
                 MessageBox.Show(e.Message);
             }
+            finally
+            {
+                CloseWindow(window);
+            }
         }
-        private void EditTask(object o)
+        private void EditTask(object window)
         {
             string errors = Validate();
             if (!string.IsNullOrEmpty(errors)) { MessageBox.Show(errors); return; }
@@ -80,8 +85,7 @@ namespace TaskManagerApplication
             }
             finally
             {
-                //TODO
-                //Close
+                CloseWindow(window);
             }
         }
         
@@ -112,14 +116,22 @@ namespace TaskManagerApplication
             }
 
             return string.Empty;
-        }
+        } 
         
         private void FillCategories()
         {
             var q = (from c in _dbContext.Categories select c).ToList();
             Categories = q;
         }
-       
+        private void CloseWindow(object o)
+        {
+            Window window = o as Window;
+            if (window != null)
+            {
+                window.Close();
+            }
+        }
+    
         #region Properties
 
         private Task oldTaskValue;
@@ -191,6 +203,7 @@ namespace TaskManagerApplication
 
         public ICommand SaveChangesCommand { get; set; }
         public ICommand EditChangesCommand { get; set; }
+        public ICommand CloseWindowCommand { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

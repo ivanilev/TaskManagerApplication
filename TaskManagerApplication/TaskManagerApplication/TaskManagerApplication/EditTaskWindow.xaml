@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:custns="clr-namespace:TaskManagerApplication"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
-        Title="EditTaskWindow" Height="350" Width="400"
-
+        Title="Edit Task" Height="350" Width="400"
+        x:Name="EditTaskWindow1"
         >
     <Window.DataContext>
         <custns:TaskViewModel />
@@ -114,7 +114,8 @@
                 />
         <Button Name="btnClose" Grid.Row="5" Grid.Column="1" 
                 Content="Close" Width="80" Height="30" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" Click="btnClose_Click" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" 
+                Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=EditTaskWindow1}"
                 />
 
     </Grid>

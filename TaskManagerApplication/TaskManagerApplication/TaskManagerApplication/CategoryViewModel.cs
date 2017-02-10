@@ -17,6 +17,7 @@ namespace TaskManagerApplication
         {
             SaveChangesCommand = new RelayCommand(SaveCategory);
             EditCategoryCommand = new RelayCommand(EditCategory);
+            CloseWindowCommand = new RelayCommand(CloseWindow);
         }
 
         private bool Validate()
@@ -64,8 +65,7 @@ namespace TaskManagerApplication
             }
             finally
             {
-                //TODO
-                //Close
+                CloseWindow(p);
             }
         }
         private void SaveCategory(object p)
@@ -82,10 +82,23 @@ namespace TaskManagerApplication
             {
                 MessageBox.Show(e.Message);
             }
+            finally
+            {
+                CloseWindow(p);
+            }
         }
-        
+        private void CloseWindow(object o)
+        {
+            Window window = o as Window;
+            if (window != null)
+            {
+                window.Close();
+            }
+        }
+    
         public ICommand SaveChangesCommand { get; set; }
         public ICommand EditCategoryCommand { get; set; }
+        public ICommand CloseWindowCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
