@@ -20,7 +20,8 @@ namespace TaskManagerApplication
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> Deadline { get; set; }
-    
+        public bool IsComplete { get; set; }
+
         public virtual Category Category { get; set; }
         public virtual Priority Priority { get; set; }
     }

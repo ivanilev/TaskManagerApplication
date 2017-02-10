@@ -81,6 +81,7 @@
                 <ContextMenu>
                     <MenuItem Header="Edit" Command="{Binding EditTaskCommand}" CommandParameter="{Binding AllTasksSelectedItem}" />
                     <MenuItem Header="Delete" Command="{Binding DeleteTaskCommand}" CommandParameter="{Binding AllTasksSelectedItem}"/>
+                    <MenuItem Header="Complete" Command="{Binding CompleteTaskCommand}" CommandParameter="{Binding AllTasksSelectedItem}"/>
                 </ContextMenu>
             </GroupBox.ContextMenu>
             <ScrollViewer Margin="1,5,1,1" >

@@ -163,4 +163,11 @@ values (N'High')
 insert into TaskManagerDB.dbo.Priorities
 values (N'Medium')
 insert into TaskManagerDB.dbo.Priorities
-values (N'Low'
+values (N'Low')
+
+
+ALTER TABLE dbo.Tasks ADD IsCompleted BIT default 'False'
+
+update dbo.Tasks
+set IsCompleted = 'False'
+

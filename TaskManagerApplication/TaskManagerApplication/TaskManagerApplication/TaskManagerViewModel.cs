@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using System.Windows.Threading; 
 
 namespace TaskManagerApplication
 {
@@ -31,6 +31,7 @@ namespace TaskManagerApplication
             AddTaskCommand = new RelayCommand(AddTask);
             DeleteTaskCommand = new RelayCommand(DeleteTask);
             EditTaskCommand = new RelayCommand(EditTask);
+            CompleteTaskCommand = new RelayCommand(CompleteTask);
 
             RefreshCommand = new RelayCommand(Refresh);
 
@@ -39,6 +40,7 @@ namespace TaskManagerApplication
         private void FillAllTasks()
         {
             var query = (from t in ctx.Tasks select t).ToList();
+            query = query.Where(t => t.IsComplete == false).ToList();
             this.Tasks = new ObservableCollection<Task>(query);
         }
         private void FillCategories()
@@ -52,8 +54,9 @@ namespace TaskManagerApplication
                 from t in ctx.Tasks
                 join p in ctx.Priorities on t.PriorityID equals p.ID
                 orderby p.ID
-                select t).Take(5).ToList();
+                select t).Take(10).ToList();
 
+            query = query.Where(t => t.IsComplete == false).ToList();
             this.TodaysTasks = new ObservableCollection<Task>(query);
         }
 
@@ -142,6 +145,7 @@ namespace TaskManagerApplication
         public ICommand AddTaskCommand { get; set; }
         public ICommand DeleteTaskCommand { get; set; }
         public ICommand EditTaskCommand { get; set; }
+        public ICommand CompleteTaskCommand { get; set; }
 
         private void AddTask(object o)
         {
@@ -196,6 +200,22 @@ namespace TaskManagerApplication
             ((TaskViewModel)editWindow.DataContext).OldTaskValue = AllTasksSelectedItem;
             
             editWindow.Show();
+        }
+        private void CompleteTask(object o)
+        {
+            try
+            {
+                ctx.Tasks.FirstOrDefault(x => x.ID == AllTasksSelectedItem.ID).IsComplete = true;
+                ctx.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Refresh(null);
+            }
         }
 
         #endregion
