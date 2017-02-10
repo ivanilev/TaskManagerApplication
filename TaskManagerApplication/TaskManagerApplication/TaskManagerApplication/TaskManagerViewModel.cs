@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -20,20 +23,22 @@ namespace TaskManagerApplication
 
             DispatcherTimerSetup();
 
+            DeleteCategoryCommand = new RelayCommand(DeleteCategory);
             RefreshCommand = new RelayCommand(Refresh);
             AddCategoryCommand = new RelayCommand(AddCategory);
             AddTaskCommand = new RelayCommand(AddTask);
+
         }
 
         private void FillAllTasks()
         {
             var query = (from t in ctx.Tasks select t).ToList();
-            this.Tasks = query;
+            this.Tasks = new ObservableCollection<Task>(query);
         }
         private void FillCategories()
         {
             var query = (from c in ctx.Categories select c).ToList();
-            this.Categories = query;
+            this.Categories = new ObservableCollection<Category>(query);
         }
         private void FillTodaysTasks()
         {
@@ -43,11 +48,11 @@ namespace TaskManagerApplication
                 orderby p.ID
                 select t).Take(5).ToList();
 
-            this.TodaysTasks = query;
+            this.TodaysTasks = new ObservableCollection<Task>(query);
         }
 
-        private List<TaskManagerApplication.Task> todaysTasks;
-        public List<TaskManagerApplication.Task> TodaysTasks
+        private ObservableCollection<TaskManagerApplication.Task> todaysTasks;
+        public ObservableCollection<TaskManagerApplication.Task> TodaysTasks
         {
             get { return todaysTasks; }
             set { todaysTasks = value; NotifyPropertyChanged("TodaysTasks"); }
@@ -55,27 +60,53 @@ namespace TaskManagerApplication
 
         #region Categories
 
-        private List<Category> categories;
-        public List<Category> Categories
+        private Category selectedCategoryItem;
+        public Category SelectedCategoryItem
+        {
+            get { return selectedCategoryItem; }
+            set { selectedCategoryItem = value; NotifyPropertyChanged("SelectedCategoryItem"); }
+        }
+
+        private ObservableCollection<Category> categories;
+        public ObservableCollection<Category> Categories
         {
             get { return categories; }
             set { categories = value; NotifyPropertyChanged("Categories"); }
         }
 
         public ICommand AddCategoryCommand { get; set; }
+        public ICommand DeleteCategoryCommand { get; set; }
         
         private void AddCategory(object o)
         {
             var categoryWindow = new AddCategoryWindow();
             categoryWindow.Show();
         }
+        private void DeleteCategory(object o)
+        {
+            try
+            {
+                ctx.Categories.Remove(SelectedCategoryItem);
+                ctx.SaveChanges();
+                Refresh(null);
+            }
+            catch(InvalidOperationException e)
+            {
+                MessageBox.Show("Cannot delete selected category item because there are tasks dependent on it. Please try deleting said tasks first and try again.");
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
+        }
 
         #endregion
 
         #region Tasks
 
-        private List<TaskManagerApplication.Task> tasks;
-        public List<TaskManagerApplication.Task> Tasks
+        private ObservableCollection<TaskManagerApplication.Task> tasks;
+        public ObservableCollection<TaskManagerApplication.Task> Tasks
         {
             get { return tasks; }
             set { tasks = value; NotifyPropertyChanged("Tasks"); }
