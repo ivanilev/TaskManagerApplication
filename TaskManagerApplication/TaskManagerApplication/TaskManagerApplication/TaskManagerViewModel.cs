@@ -27,7 +27,7 @@ namespace TaskManagerApplication
             RefreshCommand = new RelayCommand(Refresh);
             AddCategoryCommand = new RelayCommand(AddCategory);
             AddTaskCommand = new RelayCommand(AddTask);
-
+            DeleteTaskCommand = new RelayCommand(DeleteTask);
         }
 
         private void FillAllTasks()
@@ -103,7 +103,14 @@ namespace TaskManagerApplication
 
         #endregion
 
-        #region Tasks
+        #region AllTasks
+
+        private Task allTasksSelectedItem;
+        public Task AllTasksSelectedItem
+        {
+            get { return allTasksSelectedItem; }
+            set { allTasksSelectedItem = value; NotifyPropertyChanged("AllTasksSelectedItem"); }
+        }
 
         private ObservableCollection<TaskManagerApplication.Task> tasks;
         public ObservableCollection<TaskManagerApplication.Task> Tasks
@@ -113,11 +120,25 @@ namespace TaskManagerApplication
         }
 
         public ICommand AddTaskCommand { get; set; }
+        public ICommand DeleteTaskCommand { get; set; }
 
         private void AddTask(object o)
         {
             var taskWindow = new AddTaskWindow();
             taskWindow.Show();
+        }
+        private void DeleteTask(object o)
+        {
+            try
+            {
+                ctx.Tasks.Remove(AllTasksSelectedItem);
+                ctx.SaveChanges();
+                Refresh(null);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         #endregion

@@ -62,49 +62,57 @@
         </ListBox>
 
 
-        <ScrollViewer Margin="1,5,1,1" Grid.Row="2" Grid.Column="1" >
+        <GroupBox  Grid.Row="2" Grid.Column="1" BorderBrush="Transparent">
+            <GroupBox.ContextMenu>
 
-            <ListBox ItemsSource="{Binding Categories}" Name="categoriesList" Padding="1" Margin="5" Grid.Row="2"  Grid.Column="1" Grid.RowSpan="5"
-                     DisplayMemberPath="Name" FontSize="18" IsTextSearchEnabled="False" SelectedItem="{Binding SelectedCategoryItem}">
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command=""/>
+                    <MenuItem Header="Delete" Command="{Binding DeleteCategoryCommand}" CommandParameter="{Binding SelectedCategoryItem}"/>
+                </ContextMenu>
+            </GroupBox.ContextMenu>
+            <ScrollViewer Margin="1,5,1,1" >
+                <ListBox ItemsSource="{Binding Categories}" Name="categoriesList" Padding="1" Margin="5"
+                     DisplayMemberPath="Name" FontSize="18" IsTextSearchEnabled="False" SelectedItem="{Binding SelectedCategoryItem}"/>
+            </ScrollViewer>
+        </GroupBox>
 
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Edit" Command=""/>
-                        <MenuItem Header="Delete" Command="{Binding DeleteCategoryCommand}" CommandParameter="{Binding SelectedCategoryItem}"/>
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListBox>
-        </ScrollViewer>
+        <GroupBox Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" BorderBrush="Transparent">
+            <GroupBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command=""/>
+                    <MenuItem Header="Delete" Command="{Binding DeleteTaskCommand}" CommandParameter="{Binding AllTasksSelectedItem}"/>
+                </ContextMenu>
+            </GroupBox.ContextMenu>
+            <ScrollViewer Margin="1,5,1,1" >
+                <ListView Name="allTasksList" Margin="5" ItemsSource="{Binding Tasks}" HorizontalContentAlignment="Stretch"  SelectedItem="{Binding AllTasksSelectedItem}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Tag="{Binding ElementName=allTasksList}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30*"/>
+                                        <RowDefinition Height="1*"/>
+                                    </Grid.RowDefinitions>
 
-        <ScrollViewer Margin="1,5,1,1" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
-
-            <ListBox Name="allTasksList" Margin="5" Grid.Row="2"  Grid.Column="2" Grid.RowSpan="5" ItemsSource="{Binding Tasks}" HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-
-                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
                                     BorderBrush="Black" BorderThickness="1,1,1,1" Padding="2" Margin="1"/>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
-                            <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="LeftToRight" FontSize="10"/>
-                            <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
+                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="LeftToRight" FontSize="10"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
 
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Description}" FlowDirection="LeftToRight" FontSize="14" Padding="2" Margin="2"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+                                    <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Description}" FlowDirection="LeftToRight" FontSize="14" Padding="2" Margin="2"/>
+                                </Grid>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+        </GroupBox>        
     </Grid>
 </Window>
