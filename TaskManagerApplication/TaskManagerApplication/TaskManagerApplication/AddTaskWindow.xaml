@@ -1,6 +1,7 @@
 ﻿<Window x:Class="TaskManagerApplication.AddTaskWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
         Title="AddTaskWindow" Height="350" Width="400"
         xmlns:custns="clr-namespace:TaskManagerApplication"
         >
@@ -61,10 +62,10 @@
                VerticalContentAlignment="Center"
                FontSize="16"
                />
-        <DatePicker Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+        <xctk:DateTimePicker Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
                      VerticalAlignment="Center"
                     BorderBrush="Black" BorderThickness="1" Height="30"
-                    Name="dpDeadline" SelectedDate="{Binding Path=Deadline}"
+                    Name="dpDeadline" Value="{Binding Path=Deadline}"
                  />
 
         <Label Grid.Row="3" Grid.Column="0"

@@ -239,8 +239,8 @@ namespace TaskManagerApplication
         {
             var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
 
-            int days_Remaining = (q[0].Deadline.Value - DateTime.Now).Days;
-            if (days_Remaining < 3)
+            int hours_remaining = (q[0].Deadline.Value - DateTime.Now).Hours;
+            if (hours_remaining < 3)
             {
                 DeadlineComingUp = "Red";
             }
