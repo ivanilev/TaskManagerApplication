@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Linq;
 
 namespace TaskManagerApplication
 {
@@ -14,6 +15,14 @@ namespace TaskManagerApplication
         public AddCategoryViewModel()
         {
             SaveChangesCommand = new RelayCommand(SaveCategory);
+        }
+
+        private bool Validate()
+        {
+            var categories = (from c in _dbContext.Categories select c).ToList();
+
+            return (string.IsNullOrEmpty(CategoryName) == false
+                && categories.Where(x => x.Name == CategoryName).ToList().Count == 0);
         }
 
         private string categoryName;
@@ -32,6 +41,7 @@ namespace TaskManagerApplication
 
         private void SaveCategory(object p)
         {
+            if (!Validate()) { MessageBox.Show("Error, validation failed!"); return; }
             try
             {
                 Category C = new Category();

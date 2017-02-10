@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Data.Entity.Validation;
 
 namespace TaskManagerApplication
 {
@@ -27,6 +28,9 @@ namespace TaskManagerApplication
         }
         private void SaveTask(object o)
         {
+            string errors = Validate();
+            if (!String.IsNullOrEmpty(errors)) { MessageBox.Show(errors); return; }
+
 
             try
             {
@@ -44,12 +48,41 @@ namespace TaskManagerApplication
                 _dbContext.Tasks.Add(t);
                 _dbContext.SaveChanges();
             }
+            catch(DbEntityValidationException e)
+            {
+                MessageBox.Show(e.Message);
+            }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
         }
-        
+        private string Validate()
+        {
+            if (string.IsNullOrEmpty(TaskName) || string.IsNullOrWhiteSpace(TaskName))
+            {
+                return "Please select a task name!";
+            }
+
+            if ((IsHighPriorityChecked || IsMediumPriorityChecked || IsLowPriorityChecked) == false)
+                return "Please select task priority!";
+            
+            if (SelectedCategory == null)
+                return "Please select task category!";
+            
+
+            if (Deadline==null || Deadline <= DateTime.Today)
+                return "Deadline can't be null or scheduled for a previous date!";
+
+            if (String.IsNullOrEmpty(TaskDescription) || String.IsNullOrWhiteSpace(TaskDescription))
+            {
+                return "Please fill the task description field!";
+            }
+
+            return string.Empty;
+        }
+
+
         #region Properties
         
         private bool isHighPriorityChecked;
