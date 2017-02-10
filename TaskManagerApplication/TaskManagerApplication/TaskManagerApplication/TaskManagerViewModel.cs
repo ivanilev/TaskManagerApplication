@@ -23,11 +23,17 @@ namespace TaskManagerApplication
 
             DispatcherTimerSetup();
 
-            DeleteCategoryCommand = new RelayCommand(DeleteCategory);
-            RefreshCommand = new RelayCommand(Refresh);
+
             AddCategoryCommand = new RelayCommand(AddCategory);
+            DeleteCategoryCommand = new RelayCommand(DeleteCategory);
+            EditCategoryCommand = new RelayCommand(EditCategory);
+
             AddTaskCommand = new RelayCommand(AddTask);
             DeleteTaskCommand = new RelayCommand(DeleteTask);
+            EditTaskCommand = new RelayCommand(EditTask);
+
+            RefreshCommand = new RelayCommand(Refresh);
+
         }
 
         private void FillAllTasks()
@@ -76,7 +82,8 @@ namespace TaskManagerApplication
 
         public ICommand AddCategoryCommand { get; set; }
         public ICommand DeleteCategoryCommand { get; set; }
-        
+        public ICommand EditCategoryCommand { get; set; }
+
         private void AddCategory(object o)
         {
             var categoryWindow = new AddCategoryWindow();
@@ -100,6 +107,19 @@ namespace TaskManagerApplication
             }
             
         }
+        private void EditCategory(object o)
+        {
+            EditCategoryWindow editWindow = new EditCategoryWindow();
+
+            editWindow.DataContext = new CategoryViewModel();
+
+            ((CategoryViewModel)editWindow.DataContext).CategoryName = SelectedCategoryItem.Name;
+
+            ((CategoryViewModel)editWindow.DataContext).OldValue = SelectedCategoryItem;
+
+            editWindow.Show();
+
+        }
 
         #endregion
 
@@ -121,6 +141,7 @@ namespace TaskManagerApplication
 
         public ICommand AddTaskCommand { get; set; }
         public ICommand DeleteTaskCommand { get; set; }
+        public ICommand EditTaskCommand { get; set; }
 
         private void AddTask(object o)
         {
@@ -139,6 +160,42 @@ namespace TaskManagerApplication
             {
                 MessageBox.Show(e.Message);
             }
+        }
+        private void EditTask(object o)
+        {
+            EditTaskWindow editWindow = new EditTaskWindow();
+
+            editWindow.DataContext = new TaskViewModel();
+
+            ((TaskViewModel)editWindow.DataContext).TaskName = AllTasksSelectedItem.Name;
+
+            //I have a feeling there's a smarter way to do this
+            if(AllTasksSelectedItem.Priority.Setting.Trim()=="High")
+            {
+                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = true;
+                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = false;
+                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = false;
+            }
+            else if (AllTasksSelectedItem.Priority.Setting.Trim() == "Medium")
+            {
+                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = false;
+                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = true;
+                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = false;
+            }
+            else
+            {
+                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = false;
+                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = false;
+                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = true;
+            }
+
+            ((TaskViewModel)editWindow.DataContext).Deadline = AllTasksSelectedItem.Deadline;
+            ((TaskViewModel)editWindow.DataContext).SelectedCategory = AllTasksSelectedItem.Category;
+            ((TaskViewModel)editWindow.DataContext).TaskDescription = AllTasksSelectedItem.Description;
+
+            ((TaskViewModel)editWindow.DataContext).OldTaskValue = AllTasksSelectedItem;
+            
+            editWindow.Show();
         }
 
         #endregion

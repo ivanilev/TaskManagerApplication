@@ -5,16 +5,18 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace TaskManagerApplication
 {
-    public class AddCategoryViewModel : INotifyPropertyChanged
+    public class CategoryViewModel : INotifyPropertyChanged
     {
         private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
 
-        public AddCategoryViewModel()
+        public CategoryViewModel()
         {
             SaveChangesCommand = new RelayCommand(SaveCategory);
+            EditCategoryCommand = new RelayCommand(EditCategory);
         }
 
         private bool Validate()
@@ -39,13 +41,40 @@ namespace TaskManagerApplication
             }
         }
 
+        private Category oldValue;
+        public Category OldValue
+        {
+            get { return oldValue; }
+            set { oldValue = value; NotifyPropertyChanged("OldValue"); }
+        }
+
+        private void EditCategory(object p)
+        {
+
+            if (!Validate()) { MessageBox.Show("Error, validation failed!"); return; }
+
+            try
+            {
+                _dbContext.Categories.Where(z => z.Name == OldValue.Name).FirstOrDefault().Name = CategoryName.Trim();
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                //TODO
+                //Close
+            }
+        }
         private void SaveCategory(object p)
         {
             if (!Validate()) { MessageBox.Show("Error, validation failed!"); return; }
             try
             {
                 Category C = new Category();
-                C.Name = CategoryName;
+                C.Name = CategoryName.Trim();
                 _dbContext.Categories.Add(C);
                 _dbContext.SaveChanges();
             }
@@ -54,7 +83,9 @@ namespace TaskManagerApplication
                 MessageBox.Show(e.Message);
             }
         }
+        
         public ICommand SaveChangesCommand { get; set; }
+        public ICommand EditCategoryCommand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

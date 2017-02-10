@@ -1,7 +1,7 @@
-﻿<Window x:Class="TaskManagerApplication.AddTaskWindow"
+﻿<Window x:Class="TaskManagerApplication.EditTaskWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AddTaskWindow" Height="350" Width="400"
+        Title="EditTaskWindow" Height="350" Width="400"
         xmlns:custns="clr-namespace:TaskManagerApplication"
         >
     <Window.DataContext>
@@ -82,7 +82,7 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding Name}"/>
+                            <Label Content="{Binding Path=Name}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -102,13 +102,13 @@
                    BorderBrush="Black" BorderThickness="1" 
                    />
         </DockPanel>
-        
+
 
 
         <Button Name="btnSave" Grid.Row="5" Grid.Column="0"
                 Content="Save" Width="80" Height="30" 
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
-                Command="{Binding SaveChangesCommand}"
+                Command="{Binding EditChangesCommand}"
                 />
         <Button Name="btnClose" Grid.Row="5" Grid.Column="1" 
                 Content="Close" Width="80" Height="30" 

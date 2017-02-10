@@ -10,13 +10,14 @@ using System.Data.Entity.Validation;
 
 namespace TaskManagerApplication
 {
-    public class AddTaskViewModel : INotifyPropertyChanged
+    public class TaskViewModel : INotifyPropertyChanged
     {
         private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
 
-        public AddTaskViewModel()
+        public TaskViewModel()
         {
             SaveChangesCommand = new RelayCommand(SaveTask);
+            EditChangesCommand = new RelayCommand(EditTask);
 
             FillCategories();
         }
@@ -36,12 +37,13 @@ namespace TaskManagerApplication
             {
                 Task t = new Task();
 
-                t.Name = TaskName;
+                t.Name = TaskName.Trim();
                 t.Category = SelectedCategory;
+                t.Category.Name = t.Category.Name.Trim();
                 t.Deadline = Deadline;
-                t.Description = TaskDescription;
+                t.Description = TaskDescription.Trim();
 
-                if (isHighPriorityChecked) { t.PriorityID = 1; }
+                if (IsHighPriorityChecked) { t.PriorityID = 1; }
                 else if (IsMediumPriorityChecked) { t.PriorityID = 2; }
                 else { t.PriorityID = 3; }
 
@@ -57,6 +59,10 @@ namespace TaskManagerApplication
                 MessageBox.Show(e.Message);
             }
         }
+        /// <summary>
+        /// Validates all data in the window
+        /// </summary>
+        /// <returns>Empty string if validation passes and a string of the error if it does not.</returns>
         private string Validate()
         {
             if (string.IsNullOrEmpty(TaskName) || string.IsNullOrWhiteSpace(TaskName))
@@ -81,10 +87,46 @@ namespace TaskManagerApplication
 
             return string.Empty;
         }
+        private void EditTask(object o)
+        {
+            string errors = Validate();
+            if (!string.IsNullOrEmpty(errors)) { MessageBox.Show(errors); return; }
 
+            try
+            {
+
+                Task newValue = _dbContext.Tasks.Where(d => d.ID == OldTaskValue.ID).SingleOrDefault();
+                newValue.Name = TaskName.Trim();
+                if (IsHighPriorityChecked) { newValue.PriorityID = 1; }
+                else if (IsMediumPriorityChecked) { newValue.PriorityID = 2; }
+                else { newValue.PriorityID = 3; }
+                newValue.Category = SelectedCategory;
+                newValue.Category.Name = newValue.Category.Name.Trim();
+                newValue.Deadline = Deadline;
+                newValue.Description = TaskDescription.Trim();
+
+                _dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                //TODO
+                //Close
+            }
+        }
 
         #region Properties
-        
+
+        private Task oldTaskValue;
+        public Task OldTaskValue
+        {
+            get { return oldTaskValue; }
+            set { oldTaskValue = value; NotifyPropertyChanged("OldTaskValue"); }
+        }
+
         private bool isHighPriorityChecked;
         public bool IsHighPriorityChecked
         {
@@ -146,6 +188,8 @@ namespace TaskManagerApplication
         #endregion
 
         public ICommand SaveChangesCommand { get; set; }
+        public ICommand EditChangesCommand { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

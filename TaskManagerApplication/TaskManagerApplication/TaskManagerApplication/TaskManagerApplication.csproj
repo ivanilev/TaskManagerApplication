@@ -104,16 +104,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddCategoryViewModel.cs" />
+    <Compile Include="CategoryViewModel.cs" />
     <Compile Include="AddCategoryWindow.xaml.cs">
       <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddTaskViewModel.cs" />
+    <Compile Include="EditTaskWindow.xaml.cs">
+      <DependentUpon>EditTaskWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TaskViewModel.cs" />
     <Compile Include="AddTaskWindow.xaml.cs">
       <DependentUpon>AddTaskWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Category.cs">
       <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EditCategoryWindow.xaml.cs">
+      <DependentUpon>EditCategoryWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Priority.cs">
       <DependentUpon>TaskManagerApplicationModel.tt</DependentUpon>
@@ -146,7 +152,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="EditCategoryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditTaskWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TaskManagerMainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -154,8 +168,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="TaskManagerMainWindow.xaml.cs">
+      <DependentUpon>TaskManagerMainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
