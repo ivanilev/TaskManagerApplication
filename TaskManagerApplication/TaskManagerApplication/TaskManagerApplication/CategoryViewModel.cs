@@ -37,7 +37,7 @@ namespace TaskManagerApplication
             }
             set
             {
-                categoryName = value;
+                categoryName = value.Trim();
                 NotifyPropertyChanged("CategoryName");
             }
         }

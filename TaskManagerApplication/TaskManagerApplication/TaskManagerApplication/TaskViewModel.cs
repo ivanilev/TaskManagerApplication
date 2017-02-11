@@ -182,14 +182,14 @@ namespace TaskManagerApplication
         public string TaskName
         {
             get { return taskName; }
-            set { taskName = value; NotifyPropertyChanged("TaskName"); }
+            set { taskName = value.Trim(); NotifyPropertyChanged("TaskName"); }
         }
 
         private string taskDescription;
         public string TaskDescription
         {
             get { return taskDescription; }
-            set { taskDescription = value; NotifyPropertyChanged("TaskDescription"); }
+            set { taskDescription = value.Trim(); NotifyPropertyChanged("TaskDescription"); }
         }
 
         private Nullable<DateTime> deadline = null;
