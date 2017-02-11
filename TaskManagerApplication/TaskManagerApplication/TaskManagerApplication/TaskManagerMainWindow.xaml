@@ -42,10 +42,10 @@
                 HorizontalAlignment="Center" Width="100" 
                 Command="{Binding RefreshCommand}"/>
 
-        <ListBox Name="todaysTasksList" Padding="2" Margin="5,10,5,5"
+        <ListBox Name="todaysTasksList" Margin="5,10,5,5"
                  Grid.Row="2"  Grid.Column="0" 
                  ItemsSource="{Binding TodaysTasks}" HorizontalContentAlignment="Stretch" Background="{Binding Path=DeadlineComingUp}" 
-                 
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
                  >
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -54,7 +54,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
+                        <Label Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="14"/>
                         <Label Grid.Column="1" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
                     </Grid>
                 </DataTemplate>
@@ -62,7 +62,7 @@
         </ListBox>
 
 
-        <GroupBox  Grid.Row="2" Grid.Column="1" BorderBrush="Transparent">
+        <GroupBox  Grid.Row="2" Grid.Column="1" BorderThickness="0"  Margin="0,5,0,0" >
             <GroupBox.ContextMenu>
 
                 <ContextMenu>
@@ -70,8 +70,8 @@
                     <MenuItem Header="Delete" Command="{Binding DeleteCategoryCommand}" CommandParameter="{Binding SelectedCategoryItem}"/>
                 </ContextMenu>
             </GroupBox.ContextMenu>
-            <ScrollViewer Margin="1,5,1,1" >
-                <ListBox ItemsSource="{Binding Categories}" Name="categoriesList" Padding="1" Margin="5"
+            <ScrollViewer>
+                <ListBox ItemsSource="{Binding Categories}" Name="categoriesList" Padding="1" Margin="5,5,5,0"
                      DisplayMemberPath="Name" FontSize="18" IsTextSearchEnabled="False" SelectedItem="{Binding SelectedCategoryItem}"/>
             </ScrollViewer>
         </GroupBox>
@@ -94,18 +94,20 @@
                                         <ColumnDefinition Width="6*"/>
                                         <ColumnDefinition Width="1*"/>
                                         <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="30*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
 
-                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" 
-                                    BorderBrush="Black" BorderThickness="1,1,1,1" Padding="2" Margin="1"/>
+                                    <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="4" 
+                                        BorderBrush="Black" BorderThickness="1,1,1,1" Padding="2" Margin="1"/>
 
-                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18"/>
-                                    <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="LeftToRight" FontSize="10"/>
-                                    <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="LeftToRight" FontSize="10"/>
+                                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Name}" FlowDirection="LeftToRight" FontSize="18" FontWeight="Bold"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Content="{Binding Category.Name}" FlowDirection="RightToLeft" FontSize="10"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Content="{Binding Priority.Setting}" FlowDirection="RightToLeft" FontSize="10" />
+                                    <Label Grid.Row="0" Grid.Column="3" Content="{Binding Deadline}" FlowDirection="RightToLeft" FontSize="10"/>
 
                                     <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Description}" FlowDirection="LeftToRight" FontSize="14" Padding="2" Margin="2"/>
                                 </Grid>

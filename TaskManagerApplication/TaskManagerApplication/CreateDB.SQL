@@ -166,6 +166,12 @@ insert into TaskManagerDB.dbo.Priorities
 values (N'Low')
 
 
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[Tasks]') 
+         AND name = 'IsCompleted'
+)
 ALTER TABLE dbo.Tasks ADD IsCompleted BIT default 'False'
 
 update dbo.Tasks

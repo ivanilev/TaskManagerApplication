@@ -110,7 +110,7 @@
         <Button Name="btnSave" Grid.Row="5" Grid.Column="0"
                 Content="Save" Width="80" Height="30" 
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
-                Command="{Binding EditChangesCommand}"
+                Command="{Binding EditChangesCommand}" CommandParameter="{Binding ElementName=EditTaskWindow1}"
                 />
         <Button Name="btnClose" Grid.Row="5" Grid.Column="1" 
                 Content="Close" Width="80" Height="30" 

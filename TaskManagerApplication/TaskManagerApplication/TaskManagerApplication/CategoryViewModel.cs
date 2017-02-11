@@ -62,11 +62,11 @@ namespace TaskManagerApplication
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                return;
             }
-            finally
-            {
-                CloseWindow(p);
-            }
+
+            CloseWindow(p);
+            
         }
         private void SaveCategory(object p)
         {

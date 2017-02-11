@@ -82,11 +82,11 @@ namespace TaskManagerApplication
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+                return;
             }
-            finally
-            {
-                CloseWindow(window);
-            }
+
+            CloseWindow(window);
+            
         }
         
         /// <summary>

@@ -41,7 +41,7 @@ namespace TaskManagerApplication
         private void FillAllTasks()
         {
             var query = (from t in ctx.Tasks select t).ToList();
-            query = query.Where(t => t.IsComplete == false).ToList();
+            query = query.Where(t => t.IsComplete == false).OrderByDescending(x => x.Deadline).Reverse().ToList();
             this.Tasks = new ObservableCollection<Task>(query);
         }
         private void FillCategories()
