@@ -13,8 +13,6 @@ namespace TaskManagerApplication
 {
     public class TaskManagerViewModel : INotifyPropertyChanged
     {
-        TaskManagerDBContext ctx = new TaskManagerDBContext();
-
         public TaskManagerViewModel()
         {
             FillAllTasks();
@@ -40,25 +38,37 @@ namespace TaskManagerApplication
         
         private void FillAllTasks()
         {
-            var query = (from t in ctx.Tasks select t).ToList();
-            query = query.Where(t => t.IsComplete == false).OrderByDescending(x => x.Deadline).Reverse().ToList();
-            this.Tasks = new ObservableCollection<Task>(query);
+            using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+            {
+                var query = (from t in ctx.Tasks select t).ToList();
+                query = query.Where(t => t.IsComplete == false).OrderByDescending(x => x.Deadline).Reverse().ToList();
+                this.Tasks = new ObservableCollection<Task>(query);
+            }
+           
         }
         private void FillCategories()
         {
-            var query = (from c in ctx.Categories select c).ToList();
-            this.Categories = new ObservableCollection<Category>(query);
+            using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+            {
+                var query = (from c in ctx.Categories select c).ToList();
+                this.Categories = new ObservableCollection<Category>(query);
+
+            }
         }
         private void FillTodaysTasks()
         {
-            var query = (
-                from t in ctx.Tasks
-                join p in ctx.Priorities on t.PriorityID equals p.ID
-                orderby p.ID
-                select t).Take(10).ToList();
+            using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+            {
+                var query = (
+                    from t in ctx.Tasks
+                    join p in ctx.Priorities on t.PriorityID equals p.ID
+                    orderby p.ID
+                    select t).Take(10).ToList();
 
-            query = query.Where(t => t.IsComplete == false).ToList();
-            this.TodaysTasks = new ObservableCollection<Task>(query);
+                query = query.Where(t => t.IsComplete == false).ToList();
+                this.TodaysTasks = new ObservableCollection<Task>(query);
+
+            }
         }
 
         private ObservableCollection<TaskManagerApplication.Task> todaysTasks;
@@ -97,9 +107,12 @@ namespace TaskManagerApplication
         {
             try
             {
-                ctx.Categories.Remove(SelectedCategoryItem);
-                ctx.SaveChanges();
-                Refresh(null);
+                using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+                {
+                    ctx.Categories.Remove(SelectedCategoryItem);
+                    ctx.SaveChanges();
+                    Refresh(null);
+                }
             }
             catch(InvalidOperationException e)
             {
@@ -157,8 +170,11 @@ namespace TaskManagerApplication
         {
             try
             {
-                ctx.Tasks.Remove(AllTasksSelectedItem);
-                ctx.SaveChanges();
+                using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+                {
+                    ctx.Tasks.Remove(AllTasksSelectedItem);
+                    ctx.SaveChanges();
+                }
             }
             catch (Exception e)
             {
@@ -210,8 +226,11 @@ namespace TaskManagerApplication
         {
             try
             {
-                ctx.Tasks.FirstOrDefault(x => x.ID == AllTasksSelectedItem.ID).IsComplete = true;
-                ctx.SaveChanges();
+                using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+                {
+                    ctx.Tasks.FirstOrDefault(x => x.ID == AllTasksSelectedItem.ID).IsComplete = true;
+                    ctx.SaveChanges();
+                }
             }
             catch(Exception e)
             {
@@ -243,11 +262,15 @@ namespace TaskManagerApplication
         /// <param name="e"></param>
         private void PerformCheck(object sender, EventArgs e)
         {
+            int hours_remaining;
             //Get the task with the nearest deadline
-            var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
+            using (TaskManagerDBContext ctx = new TaskManagerDBContext())
+            {
+                var q = (from t in ctx.Tasks orderby t.Deadline ascending select t).Take(1).ToArray();
+                hours_remaining = (q[0].Deadline.Value - DateTime.Now).Hours;
+            }
 
             //If there are less than three hours up until the deadline - today's tasks' background turns red.
-            int hours_remaining = (q[0].Deadline.Value - DateTime.Now).Hours;
             if (hours_remaining < 3)
             {
                 DeadlineComingUp = "Red";
