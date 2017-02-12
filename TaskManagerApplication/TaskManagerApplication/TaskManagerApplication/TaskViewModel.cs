@@ -7,13 +7,13 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Data.Entity.Validation;
+using System.Data.Entity;
 
 namespace TaskManagerApplication
 {
     public class TaskViewModel : INotifyPropertyChanged
     {
-        private TaskManagerDBContext _dbContext = new TaskManagerDBContext();
-
+        
         public TaskViewModel()
         {
             SaveChangesCommand = new RelayCommand(SaveTask);
@@ -31,20 +31,24 @@ namespace TaskManagerApplication
 
             try
             {
-                Task t = new Task();
+                using (TaskManagerDBContext _dbContext = new TaskManagerDBContext())
+                {
 
-                t.Name = TaskName.Trim();
-                t.Category = SelectedCategory;
-                t.Category.Name = t.Category.Name.Trim();
-                t.Deadline = Deadline;
-                t.Description = TaskDescription.Trim();
+                    Task t = new Task();
 
-                if (IsHighPriorityChecked) { t.PriorityID = 1; }
-                else if (IsMediumPriorityChecked) { t.PriorityID = 2; }
-                else { t.PriorityID = 3; }
+                    t.Name = TaskName.Trim();
+                    t.Category = SelectedCategory;
+                    t.Category.Name = t.Category.Name.Trim();
+                    t.Deadline = Deadline;
+                    t.Description = TaskDescription.Trim();
 
-                _dbContext.Tasks.Add(t);
-                _dbContext.SaveChanges();
+                    if (IsHighPriorityChecked) { t.PriorityID = 1; }
+                    else if (IsMediumPriorityChecked) { t.PriorityID = 2; }
+                    else { t.PriorityID = 3; }
+
+                    _dbContext.Tasks.Add(t);
+                    _dbContext.SaveChanges();
+                }
             }
             catch(DbEntityValidationException e)
             {
@@ -66,18 +70,41 @@ namespace TaskManagerApplication
 
             try
             {
+                using (TaskManagerDBContext _dbContext = new TaskManagerDBContext())
+                {
 
-                Task newValue = _dbContext.Tasks.Where(d => d.ID == OldTaskValue.ID).SingleOrDefault();
-                newValue.Name = TaskName.Trim();
-                if (IsHighPriorityChecked) { newValue.PriorityID = 1; }
-                else if (IsMediumPriorityChecked) { newValue.PriorityID = 2; }
-                else { newValue.PriorityID = 3; }
-                newValue.Category = SelectedCategory;
-                newValue.Category.Name = newValue.Category.Name.Trim();
-                newValue.Deadline = Deadline;
-                newValue.Description = TaskDescription.Trim();
+                    //_dbContext.Tasks.Where(d => d.ID == OldTaskValue.ID).SingleOrDefault();
+                    var original = _dbContext.Tasks.Find(oldTaskValue.ID);
 
-                _dbContext.SaveChanges();
+                    if (original != null)
+                    {
+                        original.Name = TaskName.Trim();
+
+                        if (IsHighPriorityChecked) { original.PriorityID = 1; }
+                        else if (IsMediumPriorityChecked) { original.PriorityID = 2; }
+                        else { original.PriorityID = 3; }
+                        
+                       original.Category.Name = original.Category.Name.Trim();
+                        original.Deadline = Deadline;
+                        original.Description = TaskDescription.Trim();
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
+            catch(DbEntityValidationException e) //Show validation errors - usually just one.
+            {
+                foreach (var validationErrors in e.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        string message = string.Format("{0}:{1}", 
+                            validationErrors.Entry.Entity.ToString(),
+                            validationError.ErrorMessage);
+                        MessageBox.Show(message);
+                    }
+                }
+                MessageBox.Show(e.Message);
+                return;
             }
             catch (Exception e)
             {
@@ -120,8 +147,11 @@ namespace TaskManagerApplication
         
         private void FillCategories()
         {
-            var q = (from c in _dbContext.Categories select c).ToList();
-            Categories = q;
+            using (TaskManagerDBContext _dbContext = new TaskManagerDBContext())
+            {
+                var q = (from c in _dbContext.Categories select c).ToList();
+                Categories = q;
+            }
         }
         private void CloseWindow(object o)
         {
