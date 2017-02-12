@@ -193,25 +193,9 @@ namespace TaskManagerApplication
 
             ((TaskViewModel)editWindow.DataContext).TaskName = AllTasksSelectedItem.Name;
 
-            //I have a feeling there's a smarter way to do this
-            if(AllTasksSelectedItem.Priority.Setting.Trim()=="High")
-            {
-                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = true;
-                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = false;
-                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = false;
-            }
-            else if (AllTasksSelectedItem.Priority.Setting.Trim() == "Medium")
-            {
-                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = false;
-                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = true;
-                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = false;
-            }
-            else
-            {
-                ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked = false;
-                ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = false;
-                ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = true;
-            }
+            ((TaskViewModel)editWindow.DataContext).IsHighPriorityChecked =(AllTasksSelectedItem.Priority.Setting.Trim()=="High");
+            ((TaskViewModel)editWindow.DataContext).IsMediumPriorityChecked = (AllTasksSelectedItem.Priority.Setting.Trim() == "Medium");
+            ((TaskViewModel)editWindow.DataContext).IsLowPriorityChecked = (AllTasksSelectedItem.Priority.Setting.Trim() == "Low");
 
             ((TaskViewModel)editWindow.DataContext).Deadline = AllTasksSelectedItem.Deadline;
             ((TaskViewModel)editWindow.DataContext).SelectedCategory = AllTasksSelectedItem.Category;
