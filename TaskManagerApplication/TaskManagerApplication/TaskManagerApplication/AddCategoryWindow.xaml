@@ -27,7 +27,9 @@
                  Text="{Binding Path=CategoryName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                  />
 
-        <Button Name="btnSave" Grid.Row="2" Grid.Column="0" Content="Save" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Command="{Binding SaveChangesCommand}"/>
+        <Button Name="btnSave" Grid.Row="2" Grid.Column="0" Content="Save" Width="80" Height="30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" 
+                Command="{Binding SaveChangesCommand}" CommandParameter="{Binding ElementName=AddCategoryWindow1}"
+                />
         <Button Name="btnClose" Grid.Row="2" Grid.Column="1" Content="Close" Width="80" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" 
                 Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=AddCategoryWindow1}"
                 />
